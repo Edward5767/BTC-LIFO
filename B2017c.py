@@ -440,11 +440,7 @@ with open('work.tmp','r') as f1:
             if line[a] != '\n':
                 msg = msg + line[a]
 
-        saveData(msg)
-
-# maybe leave the work.tmp there  ? use temp files but I need to use this file
-# before letting it be deleted
-    
+        saveData(msg)  
 
 os.remove('work.tmp')
 
