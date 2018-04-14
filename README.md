@@ -78,7 +78,8 @@ date,number,proceeds
 
 Disclaimer:
 
-This is a quick and dirty utility made for a specific purpose.  I have not filtered the data in any way.  The data input is very important.  Garbage in = garbage out.  I have not tested this in all situations.  I do not guarantee the results.  Feel free to offer suggestions for improvement.  Use at your own risk.  I intend to use a liberal license. 
+This is a quick and dirty utility made for a specific purpose.  I have not filtered the data in any way.  The data input is very important.  Garbage in = garbage out.  I have not tested this in all situations.  I do not guarantee the results.  Feel free to offer suggestions for improvement.  Use at your own risk.  I intend to use a liberal license.  I do not promise to continuously improve this program.
 
+Changes added: Copy datafile to a work.tmp file.  This enabled me to remove empty lines from the data.  This change leaves the datafile unchanged by the program.  Also the work.tmp file is removed when the script finishes.  The program will not otherwise format the data.  Each transaction is 3 pieces of data: date,number,price.  Sales are negative and buys are positive.  Sequence needs to be chronological with buys before sales as you can't sell BTC that you don't own. 
 
 
