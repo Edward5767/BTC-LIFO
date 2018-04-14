@@ -4,6 +4,7 @@
 import csv
 from datetime import date
 from decimal import *
+import os
 
 datafile = "test.txt"
 writefile = "test.csv"
@@ -445,7 +446,7 @@ with open('work.tmp','r') as f1:
 # before letting it be deleted
     
 
-
+os.remove('work.tmp')
 
 print('done')
 exit()
