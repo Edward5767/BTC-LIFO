@@ -1,5 +1,4 @@
-# program to calculate the gain or loss on bitcoin transactions in 2016
-# start by opening Bitcoin2016.txt
+# program to calculate the gain or loss on bitcoin transactions
 
 import csv
 from datetime import date
@@ -11,21 +10,64 @@ writefile = "test.csv"
 
 Precision = 8      # number of decimal places in the data
 
+print("\n\nBasis-Profit Calculator")
+print("Ed Jordan, 14 Feb 2018")
+print("Data should have one line of buys before the first sale.  It can have a line of headers at the top.")
+print("Data file needs 3 columns.  These are separated by commas or tabs.")
+print("Program uses last-in to first-out, LIFO, basis accounting\n")
+print("Data should be in chronological order with buys first before sales.")
+print("An 'index out of range' error should be related to the data file format. ")
+
+a = input("Name of the data file (default=test) :")
+    
+if a != '': 
+    dfile = ''
+    for s in range(0,len(a)):
+        if a[s] == '.':
+            break
+        dfile = dfile + a[s]
+
+    datafile = dfile + '.txt'
+    writefile = dfile + '.csv'
+
 # add section to make a working copy of the data file 
+# filter out $ and , if there are no tabs to deleniate the fields
+# correct common errors in the data format
 
 with open(datafile,'r') as f1:
     with open('work.tmp','w') as f2:
         for line in f1:
-            if line[0] != '\n':
-                f2.write(line)
-
-
+            msg = ""
+            flag = 0
+            for s in range(0,len(line)):
+                a = line[s]
+                if line[0] == '\n':
+                    break               
+                if a == chr(9):
+                    a = ','
+                    msg = msg + a
+                elif ((a == ',') and (flag == 1)):
+                    continue
+                elif a == '$':
+                    flag = 1
+                    continue
+                elif ((a == ',') and (flag == 1)):
+                    continue
+                elif a == ' ':
+                    continue
+                else:
+                    msg = msg + a
+             
+            f2.write(msg)    
+                 
 def AdjFlag(n1,n2):
     flag=0		
+    
 # 3 outcomes for addition of sold coins with bought coins
 # negative - more sold than bought
 # positive - fewer sold than bought
 # zero - equal number sold and bought  $flag 0, 1, or 2
+
     pr1 = float(n1)
     pr2 = float(n2)
     if pr1 < .000000005:
@@ -48,11 +90,6 @@ def AdjFlag(n1,n2):
 # from the data file
 
     return flag
-
-# write new data to tmp file
-# save changes in calc
-# at end close tmp file and delete 2016b file
-# rename tmp file as 2016b
 
 def findRecordIndex():
     inx = 1					# starting record
@@ -110,7 +147,6 @@ def saveData(html):
         f1.close
     return
 
-
 def writeData(dataLista, html, dataListb):
     f1 = open('work.tmp','w')
     f1.write(dataLista)
@@ -126,7 +162,6 @@ def makePositive(x):     # string x is returned positive
         if c[b] != '-':
             a = a + c[b]
     return a
-
 
 def adjLength(x,y):      # limit string to 2 decimal digits for currency.
     # y is the number of digits after the decimal point
@@ -209,10 +244,7 @@ def adjLength(x,y):      # limit string to 2 decimal digits for currency.
     if n > 0:
          for b in range(n):
             a = a + "0"		# add trailing zeros
-#    print(a,x,y,d,cnt,flag2)
-#    c = input("Done?(y/n)")
-#    if (c == 'y') or (c == 'Y'):
-#        quit(3)
+
     return a    
     
 def adjValue(x):   # adj value of digital x  and make string
@@ -226,22 +258,6 @@ def adjValue(x):   # adj value of digital x  and make string
 # write first row of the spreadsheet
 msg = "Sale,Number,proceeds,buy,basis,profit,gain"
 saveData(msg)
-# print cover page to screen
-print("\n\nBasis-Profit Calculator")
-print("Ed Jordan, 14 Feb 2018")
-print("Program output is sensitive to the data file format")
-print("Data should have one line of buys before the first sale.  It can have a line of headers at the top.")
-print("Data file needs 3 columns.  These are separated by commas.")
-print("The data file is modified by the program and contains the unsold coins at termination.")
-print("Program uses last-in to first-out, LIFO, basis accounting\n")
-print("Data should be in chronological order with buys first before sales.")
-print("Edit the names of the data and output files at the start of this program.\n")
-
-a = input("Continue?(y/n)")
-if (a == 'n') or (a == 'N'):
-    quit(1)
-
-
 
 # d1 is the date of the purchase
 # d2 is the date of the sale
@@ -378,21 +394,18 @@ while inx > 0:
         profit = adjLength(profit,2)
         msg = d2+",-"+n2+",-"+p2+","
         msg = msg +d1+","+p1+","+profit+","+gain
-#        print(msg,'-0')
         saveData(msg)
         msg = '\n'
         writeData(dataListA,msg,dataListB)
 
     if flag == 2:
         n2 = str(n2)
-#        print(n2)
         n2 = adjLength(n2,Precision)
         p2 = adjValue(p2)
         p2 = adjLength(p2,2)
 
         msg = d2+",-"+n2+",-"+p2+","+d1+","+basis+","
         msg = msg+profit+","+gain
-#        print(msg,' 2')
         saveData(msg)
         msg = d1+','+newNumCoins+','+newBasis+'\n'
 
@@ -419,8 +432,7 @@ while inx > 0:
         newBasis = adjValue(newBasis)
         newBasis=adjLength(newBasis,2)
         msg = d2+",-"+n1+",-"+np2+","+d1+","+p1+","
-        msg = msg +profit+","+gain    
-#        print(msg,'-1')   
+        msg = msg +profit+","+gain       
         saveData(msg)
         
         msg = d2+',-'+nn1+',-'+newBasis+'\n'
@@ -447,4 +459,3 @@ os.remove('work.tmp')
 print('done')
 exit()
         
-
