@@ -97,4 +97,9 @@ To incorporate a parameter to set the type of accounting without altering the da
 python B2019.py datafile.txt -F         ( change data from chronological to FIFO order -F or -f )   
 This option will filter the data to group the buys and sells together and reverse the order of them from recent to past for FIFO accounting.  The original datafile is unchanged.
 
+10 Dec 2019:
+Transactions can involve sale of coins that were purchased on multiple dates.  These partial transactions should add up to the correct number of coins along with a total price and total net value.  These figures are added to the printout at the appropriate places.
+
+
+
 
